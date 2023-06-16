@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>隨機連續播放影片</title>
+    <style>
+        #videoPlayer {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <label for="playCount">次數：</label>
+        <select id="playCountInput" name="playCount" required>
+            <option value="0">請選擇</option>
+            <option value="1">1次</option>
+            <option value="2">2次</option>
+            <option value="3">3次</option>
+            <option value="4">4次</option>
+        </select>
+        <button id="playButton">隨機播放</button>
+    </div>
+    
+    <video id="videoPlayer" controls>
+        <!-- 在此添加你的影片源 -->
+        <source src="video/LD.mp4" type="video/mp4">
+        <source src="video/LU.mp4" type="video/mp4">
+        <source src="video/RD.mp4" type="video/mp4">
+        <source src="video/RU.mp4" type="video/mp4">
+    </video>
+
+    <script>
+        // 影片列表
+        var videos = [
+            'video/LD.mp4',
+            'video/LU.mp4',
+            'video/RD.mp4',
+            'video/RU.mp4'
+        ];
+
+        // 按鈕點擊事件處理函式
+        document.getElementById('playButton').addEventListener('click', function() {
+            // 切換到全螢幕模式
+            if (videoPlayer.requestFullscreen) {
+                videoPlayer.requestFullscreen();
+            } else if (videoPlayer.mozRequestFullScreen) { // Firefox
+                videoPlayer.mozRequestFullScreen();
+            } else if (videoPlayer.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                videoPlayer.webkitRequestFullscreen();
+            } else if (videoPlayer.msRequestFullscreen) { // IE/Edge
+                videoPlayer.msRequestFullscreen();
+            }
+
+            var playCount = parseInt(document.getElementById('playCountInput').value, 10);
+            playRandomVideos(playCount);
+        });
+
+        // 退出全螢幕
+        function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) { // Firefox
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) { // Chrome, Safari and Opera
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { // IE/Edge
+                document.msExitFullscreen();
+            }
+        }
+
+        // 隨機連續播放影檔
+        function playRandomVideos(playCount) {
+            var videoPlayer = document.getElementById('videoPlayer');
+            var playedVideos = [];
+            var playCountNow = 0;
+
+            function playNextVideo() {
+                // 如果已經播放達到指定次數，則停止
+                if (playCountNow >= playCount) {
+                    videoPlayer.removeEventListener('ended', playNextVideo);
+                    exitFullscreen(); // 退出全螢幕
+                    return;
+                }
+
+                // 隨機選擇一個影檔
+                var remainingVideos = videos.filter(function(video) {
+                    return !playedVideos.includes(video);
+                });
+                var randomIndex = Math.floor(Math.random() * remainingVideos.length);
+                var randomVideo = remainingVideos[randomIndex];
+
+                // 更新影片播放器的影片源
+                videoPlayer.src = randomVideo;
+                videoPlayer.load();
+                videoPlayer.play();
+
+                // 將已播放的影檔添加到列表中
+                playedVideos.push(randomVideo);
+                // 如果已經播放了四個影檔，則清空播放列表
+                if (playedVideos.length === 4) {
+                    playedVideos = [];
+                }
+                
+                // 影片播放完畢後，自動播放下一個影檔
+                videoPlayer.addEventListener('ended', function() {
+                    playCountNow++;
+                    playNextVideo();
+                });
+            }
+
+            playNextVideo();
+        }
+    </script>
+</body>
+</html>
