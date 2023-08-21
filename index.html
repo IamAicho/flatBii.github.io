@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLE Presentation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h3 id="timeDisplay">現在的時間：</h3>
+
+    <section>
+        <h2>Connect JY901</h2>
+        <button id="connectButton">連接ESP32_JY901</button>
+        <div id="dataDisplayJY901">等待連接...</div>
+
+        <br><br>
+        <button id="scanButton">掃描ESP32_Audio</button>
+        <div id="dataDisplayScan">等待掃描...</div>
+        
+        <br><br>
+        <button id="saveButton">保存數據</button>
+        <div id="logContainer"></div>
+        <button id="exportButton">匯出音源播放時間</button>
+    </section>
+
+    <aside>
+        <h2>Controller Screen</h2>
+        <div>
+            <button id="start">Start to connect screen</button>
+            <button id="terminate">Terminate the connect</button>
+            <br><br>
+            <button id="close">Close the connect</button>
+            <button id="reconnect">Reconnect screen</button>
+            <input id="presentationId" type="text" placeholder="(Enter the ID...)">
+            <br><br>
+            <button id="playVideo" name="playVideo">playVideo</button>
+        </div>
+        <br>
+        <div><!-- 網頁中即時顯示(logScripts.js) -->
+            <h3>Live Output</h3>
+            <div id="output" class="output">
+                <div id="content"></div>
+                <div id="status"></div>
+                <pre id="log"></pre>
+            </div>
+        </div>
+
+    </aside>
+
+
+
+    <script src="myScripts.js"></script>
+    <script src="logScript.js"></script>
+</body>
+
+</html>

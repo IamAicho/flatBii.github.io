@@ -1,0 +1,13 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family: sans-serif;
+    background: radial-gradient(ellipse at center, #333333 0%, #000000 100%);
+    color: #fff;
+    overflow: hidden;
+}
+
+#videoPlayer {
+    width: 100%;
+}
