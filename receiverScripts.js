@@ -48,7 +48,6 @@ function addConnection(connection) {
 
         if (data.message === 'playVideo') { // 收到播放指令
             // 向連接發送回覆消息。
-            connection.send('Start playing!!');
 
             //-------------------------隨機播放影片-------------------------------
             // 取得影片播放器和播放按鈕的 DOM 元素
