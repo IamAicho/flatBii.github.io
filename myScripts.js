@@ -346,6 +346,8 @@ document.querySelector('#playVideo').addEventListener('click', function () {
     presentationConnection.send(JSON.stringify({ message }));
     console.log('> Sent the message to receiver: ' + message);
     log('> Sent the message to receiver: ' + message);
+    console.log('Start playing!!');
+    log('Start playing!!');
 });
 
 // const playVideoButton = document.getElementById('playVideo');
