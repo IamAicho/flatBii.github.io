@@ -112,8 +112,8 @@ function addConnection(connection) {
                     currentVideoName = 'RU';
                     console.log(currentVideoName);
                 }
-                videoPlayer.load();
                 connection.send('Played: ' + currentVideoName);
+                videoPlayer.load();
                 videoPlayer.play();
             }
 
@@ -142,8 +142,8 @@ function addConnection(connection) {
                         currentVideoName = 'RU';
                         console.log(currentVideoName);
                     }
-                    videoPlayer.load();
                     connection.send('Played: ' + currentVideoName);
+                    videoPlayer.load();
                     videoPlayer.play();
                 } else {
                     // 所有影檔播放完畢，將索引歸零並重新整理播放順序
