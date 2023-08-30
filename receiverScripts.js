@@ -57,14 +57,18 @@ function addConnection(connection) {
             var refreshButton = document.getElementById('refreshButton');
             // 影片檔案的路徑
             var videos = [
-                'video/LD.mp4',
-                'video/LU.mp4',
-                'video/RD.mp4',
-                'video/RU.mp4',
+                'video/LD1.mp4',
+                'video/LU1.mp4',
+                'video/RD1.mp4',
+                'video/RU1.mp4',
                 'video/LD2.mp4',
                 'video/LU2.mp4',
                 'video/RD2.mp4',
-                'video/RU2.mp4'
+                'video/RU2.mp4',
+                'video/LD3.mp4',
+                'video/LU3.mp4',
+                'video/RD3.mp4',
+                'video/RU3.mp4'
             ];
             // 記錄當前播放的影片索引
             var currentVideoIndex = 0;
