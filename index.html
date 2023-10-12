@@ -4,56 +4,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BLE Presentation</title>
+    <title>自我學習聽聲辨位網站</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h3 id="timeDisplay">現在的時間：</h3>
+    <h2>自我學習聽聲辨位系統操作頁面</h1>
+        <p>
+            操作步驟：
+            <b>1.</b>連接藍芽(音訊切換器)->Audio,
+            <b>2.</b>開啟投影,
+            <b>3.</b>連接藍芽(感測器)->JY901
+        </p>
+        <!-- <p class="impWord">*播放完畢會自動關閉投影*</p> -->
 
-    <section>
-        <h2>Connect JY901</h2>
-        <button id="connectButton">連接ESP32_JY901</button>
-        <div id="dataDisplayJY901">等待連接...</div>
+        <section>
+            <div>1.
+                <button id="scanAudio">配對ESP32_Audio</button>
+                <div id="displayState_Audio">等待配對...</div>
+            </div>
+            <div>2.
+                <button id="start">開啟投影畫面</button>
+                <button id="terminate">關閉投影畫面</button>
+                <div id="displayState_Presentate">等待投影...</div>
+            </div>
+            <div>3.
+                <button id="scanJY901">配對ESP32_JY901</button>
+                <button id="disconnectJY901">斷開ESP32_JY901</button>
+                <div id="displayState_JY901">等待配對...</div>
+                <div id="dataJY901" class="dataJY901">等待數據...</div>
+                <!-- 匯出收到JY901訊號的時間 -->
+                <button id="exportJY901data">匯出JY901訊號</button>
+            </div>
+            <div>
+                <p class="boldWord">已播放的方向:</p>
+                <div id="videoNameContainer"></div>
+            </div>
 
-        <br><br>
-        <button id="scanButton">掃描ESP32_Audio</button>
-        <div id="dataDisplayScan">等待掃描...</div>
-        
-        <br><br>
-        <button id="saveButton">保存數據</button>
-        <div id="logContainer"></div>
-        <button id="exportButton">匯出音源播放時間</button>
-    </section>
+            <!-- 匯出影檔播放的時間 -->
+            <button id="exportAudioName">匯出音源播放時間</button>
+        </section>
 
-    <aside>
-        <h2>Controller Screen</h2>
-        <div>
-            <button id="start">Start to connect screen</button>
-            <button id="terminate">Terminate the connect</button>
-            <br><br>
-            <button id="close">Close the connect</button>
-            <button id="reconnect">Reconnect screen</button>
-            <input id="presentationId" type="text" placeholder="(Enter the ID...)">
-            <br><br>
-            <button id="playVideo" name="playVideo">playVideo</button>
-        </div>
-        <br>
-        <div><!-- 網頁中即時顯示(logScripts.js) -->
-            <h3>Live Output</h3>
+        <aside>
+            <!-- <p class="boldWord" id="displayTime">現在時間:</p> -->
+            >
+            <button id="playVideo" name="playVideo">開始播放</button>
+            <h3>即時顯示投影的播放狀態：</h3>
             <div id="output" class="output">
-                <div id="content"></div>
-                <div id="status"></div>
+                <div id="content" class="log"></div>
+                <div id="status" class="log"></div>
                 <pre id="log"></pre>
             </div>
-        </div>
-
-    </aside>
+        </aside>
 
 
-
-    <script src="myScripts.js"></script>
-    <script src="logScript.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+        <script src="script.js"></script>
+        <script src="logScript.js"></script>
 </body>
 
 </html>
