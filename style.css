@@ -1,15 +1,20 @@
-section {
+.left {
     float: left;
-    width: 55%;
+    width: 25%;
 }
 
-aside {
-    float: right;
-    width: 45%;
+.middle {
+    float: left;
+    width: 30%;
+}
+
+.right {
+    float: left;
+    width: 40%;
 }
 
 div {
-    padding: 8px;
+    padding: 5px;
 }
 
 button {
@@ -29,16 +34,28 @@ button:hover {
     border: 2px #3B7C78 solid;
 }
 
+pre {
+    margin: 0;
+}
+
 .output {
     background-color: #f0f0f0;
     border-radius: 10px;
     display: block;
     padding: 10px;
+    overflow-x: auto;
 }
 
 .log {
     padding: 0;
 }
+
+video {
+    width: 100%;
+    height: auto;
+}
+
+
 
 /* 特別標色 */
 .impWord {
