@@ -1,3 +1,62 @@
+//----------------------------BLE 連接 ESP32_Audio-------------------------------
+let deviceAudio;
+var servAudio_uuid = '6e400003-b5a3-f393-e0a9-e50e24dcca9e'.toLowerCase();
+var charAudio_uuid = '6e400004-b5a3-f393-e0a9-e50e24dcca9e'.toLowerCase();
+let characteristicAudio;
+let valueStr;  // 傳給ESP32_Audio的字串指令
+
+$(function () {
+    $("#scanAudio").on('click', async function () {
+        console.log('尋找 ESP32_BLE_Audio...')
+        try {
+            deviceAudio = await navigator.bluetooth.requestDevice({
+                filters: [{ namePrefix: 'ESP32_BLE_Audio' }],
+                optionalServices: [servAudio_uuid]
+            });
+            $("#displayState_Audio").text('配對中...');
+            console.log('連接 ESP32_BLE_Audio 中...');
+            const server = await deviceAudio.gatt.connect();
+            const service = await server.getPrimaryService(servAudio_uuid);
+            characteristicAudio = await service.getCharacteristic(charAudio_uuid);
+            $("#displayState_Audio").text('掃描成功！可以連接投影畫面了。');
+            console.log('> 已連接到 ESP32_Audio 。');
+        } catch (error) {
+            $("#displayState_Audio").text('連接失敗，請再掃描一次！');
+            console.error('連接 ESP32_Audio 失敗!!', error);
+            console.log('> 連接 ESP32_Audio 失敗!!', error);
+        }
+    });
+
+});
+
+// 定義收到上下左右訊息的函式
+async function downSpeaker() {
+    if (!characteristicAudio) return;
+    valueStr = 'DOWN';
+    log('> 傳送給ESP32_Audio: ' + valueStr);
+    await characteristicAudio.writeValue(new TextEncoder().encode(valueStr));
+}
+async function leftSpeaker() {
+    if (!characteristicAudio) return;
+    valueStr = 'LEFT';
+    log('> 傳送給ESP32_Audio: ' + valueStr);
+    await characteristicAudio.writeValue(new TextEncoder().encode(valueStr));
+}
+async function rightSpeaker() {
+    if (!characteristicAudio) return;
+    valueStr = 'RIGHT';
+    log('> 傳送給ESP32_Audio: ' + valueStr);
+    await characteristicAudio.writeValue(new TextEncoder().encode(valueStr));
+}
+async function upSpeaker() {
+    if (!characteristicAudio) return;
+    valueStr = 'UP';
+    log('> 傳送給ESP32_Audio: ' + valueStr);
+    await characteristicAudio.writeValue(new TextEncoder().encode(valueStr));
+}
+
+
+
 // 影片檔案的路徑
 var videos = [
     'video/D_500.mp4',
@@ -5,7 +64,6 @@ var videos = [
     'video/R_500.mp4',
     'video/U_500.mp4'
 ];
-
 
 // 隨機排序陣列的函式
 function shuffleArray(array) {
@@ -40,12 +98,16 @@ function playNextVideo() {
     if (currentVideoIndex < shuffledVideos.length) {
         // 判斷該播放的聲音方向
         if (videoName.includes('video/D')) {
+            downSpeaker();
             currentVideoName = '下方';
         } else if (videoName.includes('video/L')) {
+            leftSpeaker();
             currentVideoName = '左方';
         } else if (videoName.includes('video/R')) {
+            rightSpeaker();
             currentVideoName = '右方';
         } else if (videoName.includes('video/U')) {
+            upSpeaker();
             currentVideoName = '上方';
         }
         videoPlayer.load();
@@ -85,22 +147,29 @@ $("#pauseVideo").on('click', function () {
 
 
 $("#leftSpeaker").on('click', function () {
+    leftSpeaker();
     log('左方聲音');
     videoPlayer.src = 'video/L_500.mp4';
     videoPlayer.play();
 });
 $("#rightSpeaker").on('click', function () {
+    rightSpeaker();
     log('右方聲音');
     videoPlayer.src = 'video/R_500.mp4';
     videoPlayer.play();
 });
 $("#upSpeaker").on('click', function () {
+    upSpeaker();
     log('上方聲音');
     videoPlayer.src = 'video/U_500.mp4';
     videoPlayer.play();
 });
 $("#downSpeaker").on('click', function () {
+    downSpeaker();
     log('下方聲音');
     videoPlayer.src = 'video/D_500.mp4';
     videoPlayer.play();
 });
+
+
+
