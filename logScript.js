@@ -1,4 +1,4 @@
-var ChromeSamples = {
+var chromeSamples = {
     log: function () {
         var line = Array.prototype.slice.call(arguments).map(function (argument) {
             return typeof argument === 'string' ? argument : JSON.stringify(argument);
@@ -24,14 +24,15 @@ var ChromeSamples = {
     }
 };
 
-log = ChromeSamples.log;
+log = chromeSamples.log;
 
 // Add a global error event listener early on in the page load, to help ensure that browsers
 // which don't support specific functionality still end up displaying a meaningful message.
 window.addEventListener('error', function (error) {
-    if (ChromeSamples && ChromeSamples.setStatus) {
+    if (chromeSamples && chromeSamples.setStatus) {
         console.error(error);
-        ChromeSamples.setStatus(error.message + ' (Your browser may not support this feature.)');
+        console.log(error.message + ' (Your browser may not support this feature.)')
+        chromeSamples.setStatus('播放之前，請記得先開啟投影畫面');
         error.preventDefault();
     }
 });
