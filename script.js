@@ -78,6 +78,7 @@ $("#start").on('click', function () {
         .then(connection => {
             $("#displayState_Presentate").text('投影成功！');
             console.log('> 已連接到' + connection.url + ', ID: ' + connection.id);
+            log('> 已連接到投影畫面，可以開始播放了！');
         })
         .catch(error => {
             $("#displayState_Presentate").text('投影失敗，請在開啟一次！');
@@ -85,8 +86,49 @@ $("#start").on('click', function () {
             console.log('> 開啟失敗！' + error.message);
         });
 });
+
+let num = 0;
+// 定義收到上下左右訊息的函式
+async function downSpeaker() {
+    let currentTime = updateTime();
+    if (!characteristicAudio) return;
+    valueStr = 'DOWN';
+    console.log('> 傳送給ESP32_Audio: ' + valueStr);
+    await characteristicAudio.writeValue(new TextEncoder().encode(valueStr));
+
+    $("#videoNameContainer").append($("<p>").text(num + ', ' + currentTime + ', ' + valueStr));
+}
+async function leftSpeaker() {
+    let currentTime = updateTime();
+    if (!characteristicAudio) return;
+    valueStr = 'LEFT';
+    console.log('> 傳送給ESP32_Audio: ' + valueStr);
+    await characteristicAudio.writeValue(new TextEncoder().encode(valueStr));
+
+    $("#videoNameContainer").append($("<p>").text(num + ', ' + currentTime + ', ' + valueStr));
+}
+async function rightSpeaker() {
+    let currentTime = updateTime();
+    if (!characteristicAudio) return;
+    valueStr = 'RIGHT';
+    console.log('> 傳送給ESP32_Audio: ' + valueStr);
+    await characteristicAudio.writeValue(new TextEncoder().encode(valueStr));
+
+    $("#videoNameContainer").append($("<p>").text(num + ', ' + currentTime + ', ' + valueStr));
+}
+async function upSpeaker() {
+    let currentTime = updateTime();
+    if (!characteristicAudio) return;
+    valueStr = 'UP';
+    console.log('> 傳送給ESP32_Audio: ' + valueStr);
+    await characteristicAudio.writeValue(new TextEncoder().encode(valueStr));
+
+    $("#videoNameContainer").append($("<p>").text(num + ', ' + currentTime + ', ' + valueStr));
+}
+
 //當成功連接投影後，執行此函式
 presentationRequest.addEventListener('connectionavailable', function (event) {
+
     // 存儲可用的投影連接。
     presentationConnection = event.connection;
     // 監聽投影連接的 "message" 事件，當收到消息時觸發。
@@ -97,24 +139,32 @@ presentationRequest.addEventListener('connectionavailable', function (event) {
         let sentMessage = event.data;
         if (sentMessage.includes("DOWN")) {
             downSpeaker();
-            console.log('> 聲源:下方');
-            log('> 聲源:下方');
+            num++;
+            console.log('> ' + num + '.聲源:下方');
+            log('> ' + num + '.聲源:下方');
+            videoPlayer.src = 'video/D_500.mp4';
+            videoPlayer.play();
         } else if (sentMessage.includes("LEFT")) {
             leftSpeaker();
-            console.log('> 聲源:左方');
-            log('> 聲源:左方');
+            num++;
+            console.log('> ' + num + '.聲源:左方');
+            log('> ' + num + '.聲源:左方');
+            videoPlayer.src = 'video/L_500.mp4';
+            videoPlayer.play();
         } else if (sentMessage.includes("RIGHT")) {
             rightSpeaker();
-            console.log('> 聲源:右方');
-            log('> 聲源:右方');
+            num++;
+            console.log('> ' + num + '.聲源:右方');
+            log('> ' + num + '.聲源:右方');
+            videoPlayer.src = 'video/R_500.mp4';
+            videoPlayer.play();
         } else if (sentMessage.includes("UP")) {
             upSpeaker();
-            console.log('> 聲源:上方');
-            log('> 聲源:上方');
-        } else if (sentMessage.includes("UP")) {
-            upSpeaker();
-            console.log('> 聲源:上方');
-            log('> 聲源:上方');
+            num++;
+            console.log('> ' + num + '.聲源:上方');
+            log('> ' + num + '.聲源:上方');
+            videoPlayer.src = 'video/U_500.mp4';
+            videoPlayer.play();
         } else if (sentMessage.includes("Stop")) {
             presentationConnection.terminate();
             log('> ' + sentMessage);
@@ -123,42 +173,14 @@ presentationRequest.addEventListener('connectionavailable', function (event) {
             log('> ' + sentMessage);
         }
 
-        const currentTime = updateTime();
-        // 定義收到上下左右訊息的函式
-        async function downSpeaker() {
-            if (!characteristicAudio) return;
-            valueStr = 'DOWN';
-            console.log('> 傳送給ESP32_Audio: ' + valueStr);
-            await characteristicAudio.writeValue(new TextEncoder().encode(valueStr))
-            $("#videoNameContainer").append($("<p>").text(currentTime + ', ' + valueStr));
-        }
-        async function leftSpeaker() {
-            if (!characteristicAudio) return;
-            valueStr = 'LEFT';
-            console.log('> 傳送給ESP32_Audio: ' + valueStr);
-            await characteristicAudio.writeValue(new TextEncoder().encode(valueStr));
-            $("#videoNameContainer").append($("<p>").text(currentTime + ', ' + valueStr));
-        }
-        async function rightSpeaker() {
-            if (!characteristicAudio) return;
-            valueStr = 'RIGHT';
-            console.log('> 傳送給ESP32_Audio: ' + valueStr);
-            await characteristicAudio.writeValue(new TextEncoder().encode(valueStr));
-            $("#videoNameContainer").append($("<p>").text(currentTime + ', ' + valueStr));
-        }
-        async function upSpeaker() {
-            if (!characteristicAudio) return;
-            valueStr = 'UP';
-            console.log('> 傳送給ESP32_Audio: ' + valueStr);
-            await characteristicAudio.writeValue(new TextEncoder().encode(valueStr));
-            $("#videoNameContainer").append($("<p>").text(currentTime + ', ' + valueStr));
-        }
-
     });
     // 監聽投影連接的 "terminate" 事件，當關閉投影時觸發。
     presentationConnection.addEventListener('terminate', function () {
         $("#displayState_Presentate").text('已關閉投影畫面。');
         console.log('> 已關閉投影畫面。');
+        log('> 已關閉投影畫面。');
+        videoPlayer.pause();
+        videoPlayer.src = '';
     });
 
 });
@@ -172,8 +194,52 @@ $("#terminate").on('click', function () {
 
 
 
+// 點擊按鈕, 開始測試
+$("#playVideo").on('click', function () {
+    const message = 'playVideo';
+    // 傳字串指令到投影頁面
+    presentationConnection.send(JSON.stringify({ message }));
+    console.log('> 傳送給投影頁的字串：' + message);
+    // log('> 傳送給投影頁的字串：' + message);
+    // console.log('開始測試！');
+});
+
+$("#leftSpeaker").on('click', function () {
+    const message = 'playVideoL';
+    presentationConnection.send(JSON.stringify({ message }));
+    console.log('> 傳送給投影頁的字串：' + message);
+    leftSpeaker();
+    videoPlayer.src = 'video/L_500.mp4';
+    videoPlayer.play();
+});
+$("#rightSpeaker").on('click', function () {
+    const message = 'playVideoR';
+    presentationConnection.send(JSON.stringify({ message }));
+    console.log('> 傳送給投影頁的字串：' + message);
+    rightSpeaker();
+    videoPlayer.src = 'video/R_500.mp4';
+    videoPlayer.play();
+});
+$("#upSpeaker").on('click', function () {
+    const message = 'playVideoU';
+    presentationConnection.send(JSON.stringify({ message }));
+    console.log('> 傳送給投影頁的字串：' + message);
+    upSpeaker();
+    videoPlayer.src = 'video/U_500.mp4';
+    videoPlayer.play();
+});
+$("#downSpeaker").on('click', function () {
+    const message = 'playVideoD';
+    presentationConnection.send(JSON.stringify({ message }));
+    console.log('> 傳送給投影頁的字串：' + message);
+    downSpeaker();
+    videoPlayer.src = 'video/D_500.mp4';
+    videoPlayer.play();
+});
 
 
+
+/*
 //----------------------------BLE 連接 ESP32_JY901-------------------------------
 let deviceJY901;
 var servJY901_uuid = '6e400001-b5a3-f393-e0a9-e50e24dcca9e'.toLowerCase();
@@ -181,7 +247,12 @@ var charJY901_uuid = '6e400002-b5a3-f393-e0a9-e50e24dcca9e'.toLowerCase();
 let characteristicJY901;
 
 // 存儲接收到的數據
-let receivedData = ''; 
+let timeArray = [];
+let receivedDataX = [];
+let receivedDataY = [];
+let receivedDataZ = [];
+let i = 0;
+let receivedData = '';
 
 $(function () {
     $("#scanJY901").on('click', async function () {
@@ -201,11 +272,26 @@ $(function () {
             // 監聽特徵值變化
             characteristicJY901.addEventListener('characteristicvaluechanged', function (event) {
                 const valueJY901 = event.target.value;
+                const currentTime2 = updateTime();
                 // 解析感測器數據, 預設數據為UFT-8編碼字符串
-                const dataJY901 = new TextDecoder().decode(valueJY901);
-                let currentTime = updateTime();
+                let dataJY901 = new TextDecoder().decode(valueJY901);
                 $("#dataJY901").text(dataJY901);
 
+                if (i == 0) {
+                    timeArray[i] = i / 20;
+                    receivedDataX[i] = dataJY901.split(',')[0];
+                    receivedDataY[i] = dataJY901.split(',')[1];
+                    receivedDataZ[i] = dataJY901.split(',')[2];
+                    i++;
+                } else {
+                    timeArray[i] = i / 20;
+                    receivedDataX[i] = dataJY901.split(',')[0] - receivedDataX[0];
+                    receivedDataY[i] = dataJY901.split(',')[1] - receivedDataY[0];
+                    receivedDataZ[i] = dataJY901.split(',')[2] - receivedDataZ[0];
+                    i++;
+                }
+
+                let currentTime = updateTime();
                 receivedData += currentTime + ', ' + dataJY901 + '\n';
             });
             await characteristicJY901.startNotifications();
@@ -222,6 +308,15 @@ $(function () {
             deviceJY901.gatt.disconnect();
             $("#displayState_JY901").text('已斷開連接！');
             console.log('> 已斷開與 ESP32_JY901 的連線。');
+            console.log(timeArray);
+            receivedDataX[0] = 0;
+            receivedDataY[0] = 0;
+            receivedDataZ[0] = 0;
+            console.log(receivedDataX);
+            console.log(receivedDataY);
+            console.log(receivedDataZ);
+
+            plot();
         }
     });
 
@@ -229,21 +324,48 @@ $(function () {
 
 
 
-// 點擊按鈕, 開始測試
-$("#playVideo").on('click', function () {
-    console.log('開始測試！');
-    const message = 'playVideo';
-    // 傳字串指令到投影頁面
-    presentationConnection.send(JSON.stringify({ message }));
-    console.log('> 傳送給投影頁的字串：' + message);
-    // log('> 傳送給投影頁的字串：' + message);
-});
+function plot() {
+    let data = [{
+        x: timeArray,
+        y: receivedDataX,
+        name: 'DataX',
+        marker: {
+            color: 'red',
+        }
+    }, {
+        x: timeArray,
+        y: receivedDataY,
+        name: 'DataY',
+        marker: {
+            color: 'blue'
+        }
+    }, {
+        x: timeArray,
+        y: receivedDataZ,
+        name: 'DataZ',
+        marker: {
+            color: 'green'
+        }
+    }];
+
+    let layout = {
+        // title: '加速規訊號圖',
+        xaxis: { title: 'time' },
+        yaxis: { title: 'angle', range: [-100, 120] },
+        margin: { t: 1 }
+    };
+
+
+    Plotly.plot(ploted, data, layout);
+}
+
 
 
 
 //---> 匯出收到JY901訊號的時間
 $("#exportJY901data").on('click', function () {
     if (receivedData) {
+        console.log(receivedData);
         const blob = new Blob([receivedData], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -266,7 +388,7 @@ $("#exportJY901data").on('click', function () {
         alert('尚未接收到數據。');
     }
 });
-
+*/
 
 
 //---> 匯出影檔播放的時間
@@ -274,7 +396,7 @@ $("#exportAudioName").on('click', function () {
     let contentElement = $('#videoNameContainer');
     let paragraphElements = contentElement.find('p');
     let textContent = "";
-    paragraphElements.each(function() {
+    paragraphElements.each(function () {
         textContent += $(this).text() + "\n"; // 換行分隔段落
     });
 
@@ -312,3 +434,6 @@ $("#exportAudioName").on('click', function () {
     }
 
 });
+
+
+
