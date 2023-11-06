@@ -9,58 +9,85 @@
 </head>
 
 <body>
-    <h2>自我學習聽聲辨位系統操作頁面</h1>
-        <p>
-            操作步驟：
-            <b>1.</b>連接藍芽(音訊切換器)->Audio,
-            <b>2.</b>開啟投影,
-            <b>3.</b>連接藍芽(感測器)->JY901
-        </p>
-        <!-- <p class="impWord">*播放完畢會自動關閉投影*</p> -->
+    <h2>自我學習聽聲辨位系統操作頁面(投影用)
+        <a href="videoTest.html"> > 非投影用</a>
+    </h2>
+    <p>
+        操作步驟：
+        <b>1.</b>連接藍芽(音訊切換器)->Audio,
+        <b>2.</b>開啟投影,
+        <b>3.</b>連接藍芽(感測器)->JY901
+    </p>
+    <p class="impWord">
+        *播放完畢會自動關閉投影*
+    </p>
 
-        <section>
-            <div>1.
-                <button id="scanAudio">配對ESP32_Audio</button>
-                <div id="displayState_Audio">等待配對...</div>
-            </div>
-            <div>2.
-                <button id="start">開啟投影畫面</button>
-                <button id="terminate">關閉投影畫面</button>
-                <div id="displayState_Presentate">等待投影...</div>
-            </div>
-            <div>3.
-                <button id="scanJY901">配對ESP32_JY901</button>
+    <div class="left">
+        <h3>即時顯示投影的播放狀態：</h3>
+        <div id="output" class="output">
+            <div id="content" class="log"></div>
+            <div id="status" class="log"></div>
+            <!-- <pre> tag 與其他標籤不同，可完整呈現程式碼當中的文本格式，包含換行符號、空格等。 -->
+            <pre id="log"></pre>
+        </div>
+
+        <!-- <div>
+                <p>加速規訊號圖</p>
+                <div id="ploted"></div>
+            </div> -->
+    </div>
+
+    <div class="middle">
+        <div>1.
+            <button id="scanAudio">配對ESP32_Audio</button>
+            <div id="displayState_Audio">等待配對...</div>
+        </div>
+        <div>2.
+            <button id="start">開啟投影畫面</button>
+            <button id="terminate">關閉投影畫面</button>
+            <div id="displayState_Presentate">等待投影...</div>
+        </div>
+        <div>
+            <!-- <button id="scanJY901">配對ESP32_JY901</button>
                 <button id="disconnectJY901">斷開ESP32_JY901</button>
                 <div id="displayState_JY901">等待配對...</div>
-                <div id="dataJY901" class="dataJY901">等待數據...</div>
-                <!-- 匯出收到JY901訊號的時間 -->
-                <button id="exportJY901data">匯出JY901訊號</button>
-            </div>
-            <div>
-                <p class="boldWord">已播放的方向:</p>
-                <div id="videoNameContainer"></div>
-            </div>
+                <div id="dataJY901" class="dataJY901">等待數據...</div> -->
+            <!-- 匯出收到JY901訊號的時間 -->
+            <!-- <button id="exportJY901data">匯出JY901訊號</button> -->
+        </div>
 
-            <!-- 匯出影檔播放的時間 -->
+        <!-- <div>
+            <p class="boldWord">已播放的方向:</p>
+            <div id="videoNameContainer"></div>
             <button id="exportAudioName">匯出音源播放時間</button>
-        </section>
+        </div> -->
 
-        <aside>
-            <!-- <p class="boldWord" id="displayTime">現在時間:</p> -->
-            >
-            <button id="playVideo" name="playVideo">開始播放</button>
-            <h3>即時顯示投影的播放狀態：</h3>
-            <div id="output" class="output">
-                <div id="content" class="log"></div>
-                <div id="status" class="log"></div>
-                <pre id="log"></pre>
-            </div>
-        </aside>
+    </div>
+
+    <div class="right">
+        <!-- <p class="boldWord" id="displayTime">現在時間:</p> -->
+        > 記得先開啟投影畫面
+        <button id="playVideo" name="playVideo">開始播放</button>
+
+        <div>
+            <button id="leftSpeaker">左</button>
+            <button id="rightSpeaker">右</button>
+            <button id="upSpeaker">上</button>
+            <button id="downSpeaker">下</button>
+        </div>
+        <video id="videoPlayer" muted="true" poster="#"></video>
 
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-        <script src="script.js"></script>
-        <script src="logScript.js"></script>
+    </div>
+
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="script.js"></script>
+    <script src="logScript.js"></script>
 </body>
 
 </html>
