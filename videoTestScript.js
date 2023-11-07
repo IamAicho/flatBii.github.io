@@ -93,7 +93,7 @@ let shuffledVideos = shuffleArray(videos.slice());
 function playNextVideo() {
     // 將播放器的影片路徑設定為隨機排序後的路徑
     videoPlayer.src = shuffledVideos[currentVideoIndex];
-    console.log((currentVideoIndex + 1) + '. ' + videoPlayer.src);
+    
     let videoName = videoPlayer.src;
     if (currentVideoIndex < shuffledVideos.length) {
         // 判斷該播放的聲音方向
@@ -113,11 +113,17 @@ function playNextVideo() {
         videoPlayer.load();
         videoPlayer.play();
         currentVideoIndex++;
+        console.log(currentVideoIndex + '. ' + String(videoName));
         log(currentVideoIndex + '. ' + currentVideoName);
 
 
         // 影片播放結束事件
-        videoPlayer.addEventListener('ended', playNextVideo);
+        let loopVideos = document.getElementById("videoPlayer");
+        loopVideos.onended = function () {
+            // alert("The video has ended");
+            playNextVideo();
+        };
+        // videoPlayer.addEventListener('ended', playNextVideo);
     } else {
         // 所有影檔播放完畢，將索引歸零並重新整理播放順序
         videoPlayer.src = '';
@@ -144,6 +150,11 @@ $("#pauseVideo").on('click', function () {
     log('> 結束播放');
 });
 
+$("#cleanLog").on('click', function () {
+    console.log('清除播放狀態(LOG)');
+    chromeSamples.clearLog();
+});
+
 
 
 $("#leftSpeaker").on('click', function () {
@@ -151,25 +162,35 @@ $("#leftSpeaker").on('click', function () {
     log('左方聲音');
     videoPlayer.src = 'video/L_500.mp4';
     videoPlayer.play();
+    onendedVideo();
 });
 $("#rightSpeaker").on('click', function () {
     rightSpeaker();
     log('右方聲音');
     videoPlayer.src = 'video/R_500.mp4';
     videoPlayer.play();
+    onendedVideo();
 });
 $("#upSpeaker").on('click', function () {
     upSpeaker();
     log('上方聲音');
     videoPlayer.src = 'video/U_500.mp4';
     videoPlayer.play();
+    onendedVideo();
 });
 $("#downSpeaker").on('click', function () {
     downSpeaker();
     log('下方聲音');
     videoPlayer.src = 'video/D_500.mp4';
     videoPlayer.play();
+    onendedVideo();
 });
 
+function onendedVideo(string) {
+    let oneVideo = document.getElementById("videoPlayer");
+    oneVideo.onended = function () {
+        log('END');
+    };
+}
 
 
