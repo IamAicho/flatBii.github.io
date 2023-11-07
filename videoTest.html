@@ -18,22 +18,28 @@
     <section>
         <button id="playVideo">自動全播放</button>
         <button id="pauseVideo">結束播放</button>
+        
         <h3>投影的播放狀態：</h3>
         <div id="output" class="output">
             <div id="content" class="log"></div>
             <div id="status" class="log"></div>
             <pre id="log"></pre>
         </div>
+        <button id="cleanLog">清除</button>
     </section>
 
     <aside>
-        <h3>投影的播放畫面模擬：</h3>
-        <div>
-            <button id="leftSpeaker">左</button>
-            <button id="rightSpeaker">右</button>
-            <button id="upSpeaker">上</button>
-            <button id="downSpeaker">下</button>
+        <div id="directionButtons">
+            <div>
+                <button id="upSpeaker">上</button>
+            </div>
+            <div>
+                <button id="leftSpeaker">左</button>
+                <button id="downSpeaker">下</button>
+                <button id="rightSpeaker">右</button>
+            </div>
         </div>
+        <br>
         <video id="videoPlayer" controls></video>
     </aside>
 
