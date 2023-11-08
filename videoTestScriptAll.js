@@ -57,34 +57,6 @@ async function upSpeaker() {
 
 
 
-// 影片檔案的路徑
-var videos = [];
-function hertz500() {
-    log('500HZ');
-    videos = [
-        'video/D_500.mp4',
-        'video/L_500.mp4',
-        'video/R_500.mp4',
-        'video/U_500.mp4'
-    ];
-
-    $('#hertz500').css('color', 'red');
-    $('#hertz2000').css('color', 'black');
-};
-function hertz2000() {
-    log('2000HZ');
-    videos = [
-        'video/D_2000.mp4',
-        'video/L_2000.mp4',
-        'video/R_2000.mp4',
-        'video/U_2000.mp4'
-    ];
-
-    $('#hertz500').css('color', 'black');
-    $('#hertz2000').css('color', 'red');
-};
-
-
 
 // 隨機排序陣列的函式
 function shuffleArray(array) {
@@ -104,20 +76,51 @@ function shuffleArray(array) {
     return array;
 };
 
+
+let shuffledVideos;
+// 影片檔案的路徑
+var videos = [];
+function hertz500() {
+    log('500HZ');
+    videos = [
+        'video/D_500.mp4',
+        'video/L_500.mp4',
+        'video/R_500.mp4',
+        'video/U_500.mp4'
+    ];
+    shuffledVideos = shuffleArray(videos.slice());
+
+    $('#hertz500').css('color', 'red');
+    $('#hertz2000').css('color', 'black');
+};
+function hertz2000() {
+    log('2000HZ');
+    videos = [
+        'video/D_2000.mp4',
+        'video/L_2000.mp4',
+        'video/R_2000.mp4',
+        'video/U_2000.mp4'
+    ];
+    shuffledVideos = shuffleArray(videos.slice());
+
+    $('#hertz500').css('color', 'black');
+    $('#hertz2000').css('color', 'red');
+};
+
+
 // 記錄當前播放的影片索引
 let currentVideoIndex = 0;
 // 記錄當前播放的聲音方向
 let currentVideoName = '';
 
-
 // 播放下一個影檔
 function playNextVideo() {
-    let shuffledVideos = shuffleArray(videos.slice());
+    let playVideo = shuffledVideos;
     // 將播放器的影片路徑設定為隨機排序後的路徑
-    videoPlayer.src = shuffledVideos[currentVideoIndex];
+    videoPlayer.src = playVideo[currentVideoIndex];
 
     let videoName = videoPlayer.src;
-    if (currentVideoIndex < shuffledVideos.length) {
+    if (currentVideoIndex < playVideo.length) {
         // 判斷該播放的聲音方向
         if (videoName.includes('video/D')) {
             downSpeaker();
