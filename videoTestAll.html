@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="videoTestStyle.css">
+    <title>影片模擬播放測試</title>
+</head>
+
+<body>
+
+    <h2>自我學習聽聲辨位系統操作頁面(非投影用)
+        <a href="index.html"> > 投影用</a>
+    </h2>
+    <p>
+        <span class="hertz" id="hertz500" onclick="hertz500();" style="color: black;">500Hz</span>
+        <span class="hertz" id="hertz2000" onclick="hertz2000();" style="color: black">2000Hz</span>
+    </p>
+    <button id="scanAudio">配對ESP32_Audio</button>
+    <div id="displayState_Audio">等待配對...</div>
+
+    <section>
+        <button id="playVideo">自動全播放</button>
+        <button id="pauseVideo">結束播放</button>
+
+        <h3>投影的播放狀態：</h3>
+        <div id="output" class="output">
+            <div id="content" class="log"></div>
+            <div id="status" class="log"></div>
+            <pre id="log"></pre>
+        </div>
+        <button id="cleanLog">清除</button>
+    </section>
+
+    <aside>
+        <div id="directionButtons">
+            <div>
+                <button id="upSpeaker">上</button>
+            </div>
+            <div>
+                <button id="leftSpeaker">左</button>
+                <button id="downSpeaker">下</button>
+                <button id="rightSpeaker">右</button>
+            </div>
+        </div>
+        <br>
+        <video id="videoPlayer" controls></video>
+    </aside>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="videoTestScriptAll.js"></script>
+    <script src="logScript.js"></script>
+</body>
+
+</html>
