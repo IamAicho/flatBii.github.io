@@ -77,7 +77,7 @@ function shuffleArray(array) {
 };
 
 
-let shuffledVideos;
+
 // 影片檔案的路徑
 var videos = [];
 function hertz500() {
@@ -88,7 +88,6 @@ function hertz500() {
         'video/R_500.mp4',
         'video/U_500.mp4'
     ];
-    shuffledVideos = shuffleArray(videos.slice());
 
     $('#hertz500').css('color', 'red');
     $('#hertz2000').css('color', 'black');
@@ -101,7 +100,6 @@ function hertz2000() {
         'video/R_2000.mp4',
         'video/U_2000.mp4'
     ];
-    shuffledVideos = shuffleArray(videos.slice());
 
     $('#hertz500').css('color', 'black');
     $('#hertz2000').css('color', 'red');
@@ -115,12 +113,12 @@ let currentVideoName = '';
 
 // 播放下一個影檔
 function playNextVideo() {
-    let playVideo = shuffledVideos;
+    let shuffledVideos = shuffleArray(videos.slice());
     // 將播放器的影片路徑設定為隨機排序後的路徑
-    videoPlayer.src = playVideo[currentVideoIndex];
+    videoPlayer.src = shuffledVideos[currentVideoIndex];
 
     let videoName = videoPlayer.src;
-    if (currentVideoIndex < playVideo.length) {
+    if (currentVideoIndex < shuffledVideos.length) {
         // 判斷該播放的聲音方向
         if (videoName.includes('video/D')) {
             downSpeaker();
@@ -185,6 +183,7 @@ $("#leftSpeaker").on('click', function () {
     leftSpeaker();
     log('左方聲音');
     videoPlayer.src = videos[1];
+    videoPlayer.load();
     videoPlayer.play();
     onendedVideo();
 });
@@ -192,6 +191,7 @@ $("#rightSpeaker").on('click', function () {
     rightSpeaker();
     log('右方聲音');
     videoPlayer.src = videos[2];
+    videoPlayer.load();
     videoPlayer.play();
     onendedVideo();
 });
@@ -199,6 +199,7 @@ $("#upSpeaker").on('click', function () {
     upSpeaker();
     log('上方聲音');
     videoPlayer.src = videos[3];
+    videoPlayer.load();
     videoPlayer.play();
     onendedVideo();
 });
@@ -206,6 +207,7 @@ $("#downSpeaker").on('click', function () {
     downSpeaker();
     log('下方聲音');
     videoPlayer.src = videos[0];
+
     videoPlayer.play();
     onendedVideo();
 });
